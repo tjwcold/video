@@ -24,19 +24,22 @@
 [VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/utils.py", line 915, in wrapper
 [VideoKit] response = f(*args, **kwargs)
 [VideoKit] ^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 205, in update_reference_position_gallery
-[VideoKit] gallery_vision_frames = extract_gallery_frames(target_vision_frame)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 216, in extract_gallery_frames
-[VideoKit] regions = get_many_regions([ target_vision_frame ])
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
-[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
-[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 205, in update_preview_image
+[VideoKit] preview_vision_frame = process_preview_frame(reference_vision_frame, source_vision_frames, source_audio_frame, source_voice_frame, target_vision_frame, preview_mode, preview_resolution)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 248, in process_preview_frame
+[VideoKit] temp_vision_frame, temp_vision_mask = processor_module.process_frame(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 745, in process_frame
+[VideoKit] temp_vision_frame = transfer_style(source_region, target_region, temp_vision_frame)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 574, in transfer_style
+[VideoKit] pixel_boost_vision_frame = forward_transfer_style(source_region, target_region, pixel_boost_vision_frame)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 601, in forward_transfer_style
+[VideoKit] for style_transfer_input in style_transfer.get_inputs():
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] AttributeError: 'NoneType' object has no attribute 'get_inputs'
 [错误检测] 可能是问题
 [VideoKit] Traceback (most recent call last):
 [错误检测] 可能是问题
@@ -70,103 +73,14 @@
 [VideoKit] File "/content/video/videokit/uis/components/preview.py", line 248, in process_preview_frame
 [VideoKit] temp_vision_frame, temp_vision_mask = processor_module.process_frame(
 [VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 739, in process_frame
-[VideoKit] source_region = extract_source_region(source_vision_frames)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 724, in extract_source_region
-[VideoKit] temp_regions = get_many_regions([source_vision_frame])
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
-[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
-[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
-[错误检测] 可能是问题
-[VideoKit] Traceback (most recent call last):
-[错误检测] 可能是问题
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/queueing.py", line 667, in process_events
-[VideoKit] response = await route_utils.call_process_api(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/route_utils.py", line 349, in call_process_api
-[VideoKit] output = await app.get_blocks().process_api(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 2274, in process_api
-[VideoKit] result = await self.call_function(
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 745, in process_frame
+[VideoKit] temp_vision_frame = transfer_style(source_region, target_region, temp_vision_frame)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 574, in transfer_style
+[VideoKit] pixel_boost_vision_frame = forward_transfer_style(source_region, target_region, pixel_boost_vision_frame)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 601, in forward_transfer_style
+[VideoKit] for style_transfer_input in style_transfer.get_inputs():
 [VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 1781, in call_function
-[VideoKit] prediction = await anyio.to_thread.run_sync(  # type: ignore
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/to_thread.py", line 63, in run_sync
-[VideoKit] return await get_async_backend().run_sync_in_worker_thread(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 2518, in run_sync_in_worker_thread
-[VideoKit] return await future
-[VideoKit] ^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 1002, in run
-[VideoKit] result = context.run(func, *args)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/utils.py", line 915, in wrapper
-[VideoKit] response = f(*args, **kwargs)
-[VideoKit] ^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 205, in update_reference_position_gallery
-[VideoKit] gallery_vision_frames = extract_gallery_frames(target_vision_frame)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 216, in extract_gallery_frames
-[VideoKit] regions = get_many_regions([ target_vision_frame ])
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
-[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
-[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
-[错误检测] 可能是问题
-[VideoKit] Traceback (most recent call last):
-[错误检测] 可能是问题
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/queueing.py", line 667, in process_events
-[VideoKit] response = await route_utils.call_process_api(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/route_utils.py", line 349, in call_process_api
-[VideoKit] output = await app.get_blocks().process_api(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 2274, in process_api
-[VideoKit] result = await self.call_function(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 1781, in call_function
-[VideoKit] prediction = await anyio.to_thread.run_sync(  # type: ignore
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/to_thread.py", line 63, in run_sync
-[VideoKit] return await get_async_backend().run_sync_in_worker_thread(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 2518, in run_sync_in_worker_thread
-[VideoKit] return await future
-[VideoKit] ^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 1002, in run
-[VideoKit] result = context.run(func, *args)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/utils.py", line 915, in wrapper
-[VideoKit] response = f(*args, **kwargs)
-[VideoKit] ^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 205, in update_preview_image
-[VideoKit] preview_vision_frame = process_preview_frame(reference_vision_frame, source_vision_frames, source_audio_frame, source_voice_frame, target_vision_frame, preview_mode, preview_resolution)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 248, in process_preview_frame
-[VideoKit] temp_vision_frame, temp_vision_mask = processor_module.process_frame(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 739, in process_frame
-[VideoKit] source_region = extract_source_region(source_vision_frames)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 724, in extract_source_region
-[VideoKit] temp_regions = get_many_regions([source_vision_frame])
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
-[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
-[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
+[VideoKit] AttributeError: 'NoneType' object has no attribute 'get_inputs'
 [错误检测] 可能是问题

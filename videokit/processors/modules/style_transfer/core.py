@@ -532,6 +532,16 @@ def pre_check() -> bool:
 
 
 def pre_process(mode : ProcessMode) -> bool:
+	model_options = get_model_options()
+	if not model_options:
+		return False
+	model_source_set = model_options.get('sources')
+	if not model_source_set:
+		return False
+	for model_name in model_source_set.keys():
+		model_path = model_source_set.get(model_name).get('path')
+		if not is_file(model_path):
+			return False
 	return True
 
 
@@ -552,8 +562,14 @@ def post_process() -> None:
 
 
 def transfer_style(source_region : Region, target_region : Region, temp_vision_frame : VisionFrame) -> VisionFrame:
-	model_template = get_model_options().get('template')
-	model_size = get_model_options().get('size')
+	model_options = get_model_options()
+	if not model_options:
+		return temp_vision_frame
+	style_transfer_model = get_inference_pool().get('style_transfer')
+	if not style_transfer_model:
+		return temp_vision_frame
+	model_template = model_options.get('template')
+	model_size = model_options.get('size')
 	pixel_boost_size = unpack_resolution(state_manager.get_item('style_transfer_pixel_boost'))
 	pixel_boost_total = pixel_boost_size[0] // model_size[0]
 	crop_vision_frame, affine_matrix = warp_region_by_region_landmark_5(temp_vision_frame, target_region.landmark_set.get('5/68'), model_template, pixel_boost_size)
@@ -592,6 +608,8 @@ def transfer_style(source_region : Region, target_region : Region, temp_vision_f
 
 def forward_transfer_style(source_region : Region, target_region : Region, crop_vision_frame : VisionFrame) -> VisionFrame:
 	style_transfer = get_inference_pool().get('style_transfer')
+	if not style_transfer:
+		return crop_vision_frame
 	model_type = get_model_options().get('type')
 	style_transfer_inputs = {}
 
@@ -617,6 +635,8 @@ def forward_transfer_style(source_region : Region, target_region : Region, crop_
 
 def forward_convert_embedding(region_embedding : Embedding) -> Embedding:
 	embedding_converter = get_inference_pool().get('embedding_converter')
+	if not embedding_converter:
+		return region_embedding
 
 	with conditional_thread_semaphore():
 		region_embedding = embedding_converter.run(None,
