@@ -8,10 +8,10 @@ import videokit.jobs.job_store
 from videokit import config, content_analyser, region_classifier, region_detector, landmark_detector, region_masker, region_recognizer, inference_manager, logger, state_manager, translator, video_manager
 from videokit.common_helper import create_float_metavar, create_int_metavar
 from videokit.download import conditional_download_hashes, conditional_download_sources, resolve_download_url
-from videokit.region_analyser import scale_face
-from videokit.region_helper import paste_back, warp_face_by_face_landmark_5
+from videokit.region_analyser import scale_region
+from videokit.region_helper import paste_back, warp_region_by_region_landmark_5
 from videokit.region_masker import create_box_mask, create_occlusion_mask
-from videokit.region_selector import select_faces
+from videokit.region_selector import select_regions
 from videokit.filesystem import in_directory, is_image, is_video, resolve_relative_path, same_file_extension
 from videokit.processors.modules.quality_enhancer import choices as quality_enhancer_choices
 from videokit.processors.modules.quality_enhancer.types import QualityEnhancerInputs, QualityEnhancerWeight

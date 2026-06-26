@@ -9,7 +9,7 @@ import videokit.choices
 from videokit import content_analyser, core, state_manager
 from videokit.cli_helper import render_table
 from videokit.download import conditional_download, resolve_download_url
-from videokit.region_store import clear_static_faces
+from videokit.region_store import clear_static_regions
 from videokit.filesystem import get_file_extension
 from videokit.types import BenchmarkCycleSet
 from videokit.vision import count_video_frame_total, detect_video_fps
@@ -64,7 +64,7 @@ def cycle(cycle_count : int) -> BenchmarkCycleSet:
 		if state_manager.get_item('benchmark_mode') == 'cold':
 			content_analyser.analyse_image.cache_clear()
 			content_analyser.analyse_video.cache_clear()
-			clear_static_faces()
+			clear_static_regions()
 
 		start_time = perf_counter()
 		core.conditional_process()

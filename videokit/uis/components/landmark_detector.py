@@ -5,7 +5,7 @@ import gradio
 import videokit.choices
 from videokit import landmark_detector, state_manager, translator
 from videokit.common_helper import calculate_float_step
-from videokit.types import FaceLandmarkerModel, Score
+from videokit.types import RegionLandmarkerModel, Score
 from videokit.uis.core import register_ui_component
 
 landmark_detector_MODEL_DROPDOWN : Optional[gradio.Dropdown] = None
@@ -37,7 +37,7 @@ def listen() -> None:
 	landmark_detector_SCORE_SLIDER.release(update_landmark_detector_score, inputs = landmark_detector_SCORE_SLIDER)
 
 
-def update_landmark_detector_model(landmark_detector_model : FaceLandmarkerModel) -> gradio.Dropdown:
+def update_landmark_detector_model(landmark_detector_model : RegionLandmarkerModel) -> gradio.Dropdown:
 	landmark_detector.clear_inference_pool()
 	state_manager.set_item('landmark_detector_model', landmark_detector_model)
 

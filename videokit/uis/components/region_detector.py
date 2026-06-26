@@ -6,7 +6,7 @@ import videokit.choices
 from videokit import region_detector, state_manager, translator
 from videokit.common_helper import calculate_float_step, get_last
 from videokit.sanitizer import sanitize_int_range
-from videokit.types import Angle, FaceDetectorModel, Score
+from videokit.types import Angle, RegionDetectorModel, Score
 from videokit.uis.core import register_ui_component
 from videokit.uis.types import ComponentOptions
 
@@ -72,7 +72,7 @@ def listen() -> None:
 	region_detector_SCORE_SLIDER.release(update_region_detector_score, inputs = region_detector_SCORE_SLIDER)
 
 
-def update_region_detector_model(region_detector_model : FaceDetectorModel) -> Tuple[gradio.Dropdown, gradio.Dropdown]:
+def update_region_detector_model(region_detector_model : RegionDetectorModel) -> Tuple[gradio.Dropdown, gradio.Dropdown]:
 	region_detector.clear_inference_pool()
 	state_manager.set_item('region_detector_model', region_detector_model)
 

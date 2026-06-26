@@ -3,7 +3,7 @@ from typing import Optional, Tuple
 import gradio
 
 from videokit import state_manager, translator
-from videokit.region_store import clear_static_faces
+from videokit.region_store import clear_static_regions
 from videokit.filesystem import is_image, is_video
 from videokit.uis.core import register_ui_component
 from videokit.uis.types import ComponentOptions, File
@@ -51,7 +51,7 @@ def listen() -> None:
 
 
 def update(file : File) -> Tuple[gradio.Image, gradio.Video]:
-	clear_static_faces()
+	clear_static_regions()
 
 	if file and is_image(file.name):
 		state_manager.set_item('target_path', file.name)
