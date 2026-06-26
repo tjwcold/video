@@ -94,14 +94,16 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('voice_extractor_model') ]
+	voice_extractor_model = state_manager.get_item('voice_extractor_model') or 'kim_vocal_1'
+	model_names = [ voice_extractor_model ]
 	_, model_source_set = collect_model_downloads()
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('voice_extractor_model') ]
+	voice_extractor_model = state_manager.get_item('voice_extractor_model') or 'kim_vocal_1'
+	model_names = [ voice_extractor_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 

@@ -466,14 +466,16 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('background_remover_model') ]
+	background_remover_model = state_manager.get_item('background_remover_model') or 'u2net'
+	model_names = [ background_remover_model ]
 	model_source_set = get_model_options().get('sources')
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('background_remover_model') ]
+	background_remover_model = state_manager.get_item('background_remover_model') or 'u2net'
+	model_names = [ background_remover_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
@@ -486,7 +488,7 @@ def resolve_execution_providers() -> List[ExecutionProvider]:
 
 
 def get_model_options() -> ModelOptions:
-	model_name = state_manager.get_item('background_remover_model')
+	model_name = state_manager.get_item('background_remover_model') or 'u2net'
 	return create_static_model_set('full').get(model_name)
 
 

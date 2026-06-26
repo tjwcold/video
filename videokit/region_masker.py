@@ -150,14 +150,18 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('region_occluder_model'), state_manager.get_item('region_parser_model') ]
+	region_occluder_model = state_manager.get_item('region_occluder_model') or 'xseg_1'
+	region_parser_model = state_manager.get_item('region_parser_model') or 'bisenet_resnet_18'
+	model_names = [ region_occluder_model, region_parser_model ]
 	_, model_source_set = collect_model_downloads()
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('region_occluder_model'), state_manager.get_item('region_parser_model') ]
+	region_occluder_model = state_manager.get_item('region_occluder_model') or 'xseg_1'
+	region_parser_model = state_manager.get_item('region_parser_model') or 'bisenet_resnet_18'
+	model_names = [ region_occluder_model, region_parser_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
@@ -206,7 +210,8 @@ def create_occlusion_mask(crop_vision_frame : VisionFrame) -> Mask:
 	if state_manager.get_item('region_occluder_model') == 'many':
 		model_names = [ 'xseg_1', 'xseg_2', 'xseg_3' ]
 	else:
-		model_names = [ state_manager.get_item('region_occluder_model') ]
+		region_occluder_model = state_manager.get_item('region_occluder_model') or 'xseg_1'
+		model_names = [ region_occluder_model ]
 
 	for model_name in model_names:
 		model_size = create_static_model_set('full').get(model_name).get('size')
@@ -239,7 +244,7 @@ def create_area_mask(crop_vision_frame : VisionFrame, region_landmark_68 : Regio
 
 
 def create_region_mask(crop_vision_frame : VisionFrame, region_mask_regions : List[RegionMaskRegion]) -> Mask:
-	model_name = state_manager.get_item('region_parser_model')
+	model_name = state_manager.get_item('region_parser_model') or 'bisenet_resnet_18'
 	model_size = create_static_model_set('full').get(model_name).get('size')
 	prepare_vision_frame = cv2.resize(crop_vision_frame, model_size)
 	prepare_vision_frame = prepare_vision_frame[:, :, ::-1].astype(numpy.float32) / 255.0
@@ -267,7 +272,7 @@ def forward_occlude_region(prepare_vision_frame : VisionFrame, model_name : str)
 
 
 def forward_parse_region(prepare_vision_frame : VisionFrame) -> Mask:
-	model_name = state_manager.get_item('region_parser_model')
+	model_name = state_manager.get_item('region_parser_model') or 'bisenet_resnet_18'
 	region_parser = get_inference_pool().get(model_name)
 
 	with conditional_thread_semaphore():

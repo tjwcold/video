@@ -121,14 +121,16 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('region_detector_model') ]
+	region_detector_model = state_manager.get_item('region_detector_model') or 'retinaface'
+	model_names = [ region_detector_model ]
 	_, model_source_set = collect_model_downloads()
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('region_detector_model') ]
+	region_detector_model = state_manager.get_item('region_detector_model') or 'retinaface'
+	model_names = [ region_detector_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 

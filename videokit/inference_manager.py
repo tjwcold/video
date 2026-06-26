@@ -83,7 +83,8 @@ def create_inference_session(model_path : str, execution_device_id : int, execut
 
 
 def get_inference_context(module_name : str, model_names : List[str], execution_device_id : int, execution_providers : List[ExecutionProvider]) -> str:
-	inference_context = '.'.join([ module_name ] + model_names + [ str(execution_device_id) ] + list(execution_providers))
+	model_names_filtered = [m for m in model_names if m is not None]
+	inference_context = '.'.join([ module_name ] + model_names_filtered + [ str(execution_device_id) ] + list(execution_providers))
 	return inference_context
 
 

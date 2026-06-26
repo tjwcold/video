@@ -558,7 +558,7 @@ def get_model_options() -> ModelOptions:
 
 
 def get_frame_enhancer_model() -> str:
-	frame_enhancer_model = state_manager.get_item('frame_enhancer_model')
+	frame_enhancer_model = state_manager.get_item('frame_enhancer_model') or 'real_esrgan_x4'
 
 	if is_macos() and has_execution_provider('coreml'):
 		if frame_enhancer_model == 'real_esrgan_x2_fp16':

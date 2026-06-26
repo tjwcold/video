@@ -80,19 +80,21 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('expression_restorer_model') ]
+	expression_restorer_model = state_manager.get_item('expression_restorer_model') or 'gfpgan_1.3'
+	model_names = [ expression_restorer_model ]
 	model_source_set = get_model_options().get('sources')
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('expression_restorer_model') ]
+	expression_restorer_model = state_manager.get_item('expression_restorer_model') or 'gfpgan_1.3'
+	model_names = [ expression_restorer_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
 def get_model_options() -> ModelOptions:
-	model_name = state_manager.get_item('expression_restorer_model')
+	model_name = state_manager.get_item('expression_restorer_model') or 'gfpgan_1.3'
 	return create_static_model_set('full').get(model_name)
 
 

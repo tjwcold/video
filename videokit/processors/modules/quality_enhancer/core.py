@@ -273,19 +273,21 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('quality_enhancer_model') ]
+	quality_enhancer_model = state_manager.get_item('quality_enhancer_model') or 'gfpgan_1.4'
+	model_names = [ quality_enhancer_model ]
 	model_source_set = get_model_options().get('sources')
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('quality_enhancer_model') ]
+	quality_enhancer_model = state_manager.get_item('quality_enhancer_model') or 'gfpgan_1.4'
+	model_names = [ quality_enhancer_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
 def get_model_options() -> ModelOptions:
-	model_name = state_manager.get_item('quality_enhancer_model')
+	model_name = state_manager.get_item('quality_enhancer_model') or 'gfpgan_1.4'
 	return create_static_model_set('full').get(model_name)
 
 

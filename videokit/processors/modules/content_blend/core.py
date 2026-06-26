@@ -247,19 +247,21 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('content_blend_model') ]
+	content_blend_model = state_manager.get_item('content_blend_model') or 'inswapper_128'
+	model_names = [ content_blend_model ]
 	model_source_set = get_model_options().get('sources')
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('content_blend_model') ]
+	content_blend_model = state_manager.get_item('content_blend_model') or 'inswapper_128'
+	model_names = [ content_blend_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
 def get_model_options() -> ModelOptions:
-	model_name = state_manager.get_item('content_blend_model')
+	model_name = state_manager.get_item('content_blend_model') or 'inswapper_128'
 	return create_static_model_set('full').get(model_name)
 
 

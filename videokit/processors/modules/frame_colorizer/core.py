@@ -159,14 +159,16 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('frame_colorizer_model') ]
+	frame_colorizer_model = state_manager.get_item('frame_colorizer_model') or 'ddcolor'
+	model_names = [ frame_colorizer_model ]
 	model_source_set = get_model_options().get('sources')
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('frame_colorizer_model') ]
+	frame_colorizer_model = state_manager.get_item('frame_colorizer_model') or 'ddcolor'
+	model_names = [ frame_colorizer_model ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
@@ -177,7 +179,7 @@ def resolve_execution_providers() -> List[ExecutionProvider]:
 
 
 def get_model_options() -> ModelOptions:
-	model_name = state_manager.get_item('frame_colorizer_model')
+	model_name = state_manager.get_item('frame_colorizer_model') or 'ddcolor'
 	return create_static_model_set('full').get(model_name)
 
 

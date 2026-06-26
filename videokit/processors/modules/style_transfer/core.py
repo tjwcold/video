@@ -503,7 +503,7 @@ def get_model_options() -> ModelOptions:
 
 
 def get_model_name() -> str:
-	model_name = state_manager.get_item('style_transfer_model')
+	model_name = state_manager.get_item('style_transfer_model') or 'inswapper_128'
 
 	if is_macos() and has_execution_provider('coreml') and model_name == 'inswapper_128_fp16':
 		return 'inswapper_128'

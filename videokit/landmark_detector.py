@@ -97,14 +97,16 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('landmark_detector_model'), 'fan_68_5' ]
+	landmark_detector_model = state_manager.get_item('landmark_detector_model') or '2dfan4'
+	model_names = [ landmark_detector_model, 'fan_68_5' ]
 	_, model_source_set = collect_model_downloads()
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('landmark_detector_model'), 'fan_68_5' ]
+	landmark_detector_model = state_manager.get_item('landmark_detector_model') or '2dfan4'
+	model_names = [ landmark_detector_model, 'fan_68_5' ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
