@@ -28,9 +28,9 @@ def create_regions(vision_frame : VisionFrame, bounding_boxes : List[BoundingBox
 		region_landmark_score_68 = 0.0
 		region_angle = estimate_region_angle(region_landmark_68_5)
 
-		if state_manager.get_item('landmark_detector_score') > 0:
+		if state_manager.get_item('landmark_detector_score') or 0 > 0:
 			region_landmark_68, region_landmark_score_68 = detect_region_landmark(vision_frame, bounding_box, region_angle)
-		if region_landmark_score_68 > state_manager.get_item('landmark_detector_score'):
+		if region_landmark_score_68 > (state_manager.get_item('landmark_detector_score') or 0):
 			region_landmark_5_68 = convert_to_region_landmark_5(region_landmark_68)
 
 		region_landmark_set : RegionLandmarkSet =\
@@ -115,7 +115,7 @@ def get_many_regions(vision_frames : List[VisionFrame]) -> List[Region]:
 					all_region_scores.extend(region_scores)
 					all_region_landmarks_5.extend(region_landmarks_5)
 
-				if all_bounding_boxes and all_region_scores and all_region_landmarks_5 and state_manager.get_item('region_detector_score') > 0:
+				if all_bounding_boxes and all_region_scores and all_region_landmarks_5 and (state_manager.get_item('region_detector_score') or 0) > 0:
 					regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
 
 					if regions:

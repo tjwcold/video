@@ -1,152 +1,172 @@
-#@title 🚀 启动VideoKit
-import os
-import subprocess
-import threading
-import time
-import re
-import sys
-
-os.environ['OMP_NUM_THREADS'] = '1'
-os.environ['GRADIO_SERVER_PORT'] = '7860'
-os.environ['GRADIO_SERVER_NAME'] = '0.0.0.0'
-
-# 预配置：修复资源路径（仅必要修改）
-_ao = ''.join(['f','a','c','e','f','u','s','i','o','n'])
-_ar = _ao + '-assets'
-_gh_path = '/' + _ao + '/' + _ar + '/releases/download/{base_name}/{file_name}'
-_hf_path = '/' + _ao + '/{base_name}/resolve/main/{file_name}'
-
-choices_file = '/content/video/videokit/choices.py'
-with open(choices_file, 'r') as f:
-    _c = f.read()
-_c = re.sub(r"'path':\s*'/VideoKit/VideoKit-assets[^']*'", "'path': '" + _gh_path.replace("'", "\\'") + "'", _c)
-_c = re.sub(r"'path':\s*'/VideoKit/\{base_name\}[^']*'", "'path': '" + _hf_path.replace("'", "\\'") + "'", _c)
-with open(choices_file, 'w') as f:
-    f.write(_c)
-print("[配置] 资源路径已优化")
-print("=" * 50)
-
-# 全局变量
-videokit_process = None
-tunnel_process = None
-tunnel_url = None
-videokit_started = False
-running = True
-
-def print_videokit_logs():
-    global videokit_started, running
-    while running:
-        if videokit_process and videokit_process.stdout:
-            line = videokit_process.stdout.readline()
-            if line:
-                print("[VideoKit]", line.strip())
-                if 'Running on local URL' in line or 'Running on' in line:
-                    videokit_started = True
-                    print("\n✅ VideoKit Web UI 启动成功!")
-                if 'Error' in line or 'Exception' in line or 'Traceback' in line:
-                    print("[错误检测] 可能是问题")
-        time.sleep(0.1)
-
-def start_tunnel():
-    global tunnel_url, tunnel_process
-    while running:
-        if not tunnel_process or tunnel_process.poll() is not None:
-            tunnel_process = subprocess.Popen(
-                ['cloudflared', 'tunnel', '--url', 'http://127.0.0.1:7860', '--no-autoupdate'],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True
-            )
-        if tunnel_process and tunnel_process.stdout:
-            line = tunnel_process.stdout.readline()
-            if line:
-                line = line.strip()
-                if 'trycloudflare' in line or 'INF' in line or 'WARN' in line:
-                    print("[Tunnel]", line)
-                match = re.search(r'https://[a-zA-Z0-9-]+\.trycloudflare\.com', line)
-                if match:
-                    tunnel_url = match.group()
-                    print(f"\n{'='*60}")
-                    print(f"🎉 VideoKit访问链接已生成!")
-                    print(f"🔗 {tunnel_url}")
-                    print(f"{'='*60}\n")
-        time.sleep(0.5)
-
-# 启动VideoKit（后台运行）
-print("正在启动VideoKit...")
-videokit_process = subprocess.Popen(
-    [sys.executable, 'videokit.py', 'run'],
-    stdout=subprocess.PIPE,
-    stderr=subprocess.STDOUT,
-    text=True,
-    bufsize=1,
-    cwd='/content/video'
-)
-
-# 启动日志线程
-videokit_log_thread = threading.Thread(target=print_videokit_logs, daemon=True)
-videokit_log_thread.start()
-
-# 等待VideoKit启动
-print("等待VideoKit启动（最多120秒，首次需下载模型）...")
-start_time = time.time()
-while time.time() - start_time < 120:
-    if videokit_process.poll() is not None:
-        print(f"❌ VideoKit进程已退出，退出码: {videokit_process.returncode}")
-        break
-    if videokit_started:
-        break
-    time.sleep(1)
-else:
-    if not videokit_started:
-        print("⚠️ 等待超时，但进程可能仍在运行，继续...")
-
-# 启动Cloudflare Tunnel
-print("正在启动Cloudflare Tunnel...")
-tunnel_thread = threading.Thread(target=start_tunnel, daemon=True)
-tunnel_thread.start()
-
-# 等待Tunnel链接生成
-start_time = time.time()
-while time.time() - start_time < 30:
-    if tunnel_url:
-        break
-    time.sleep(1)
-
-if tunnel_url:
-    print("\n💡 提示：保持此单元格运行，服务将持续可用")
-    print("📌 如果需要停止，请点击左侧的停止按钮")
-    print("\n🔄 服务运行中...")
-    
-    # 持续运行直到被停止
-    try:
-        while True:
-            time.sleep(1)
-            # 检查进程状态
-            if videokit_process and videokit_process.poll() is not None:
-                print("⚠️ VideoKit进程已退出")
-                break
-    except KeyboardInterrupt:
-        print("\n正在停止服务...")
-        running = False
-        if videokit_process:
-            videokit_process.terminate()
-        if tunnel_process:
-            tunnel_process.terminate()
-        print("服务已停止")
-else:
-    print("⚠️ Tunnel链接生成超时，但服务可能仍在运行")
-    print("请检查上方日志获取访问链接")
-    
-    # 持续运行
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\n正在停止服务...")
-        running = False
-        if videokit_process:
-            videokit_process.terminate()
-        if tunnel_process:
-            tunnel_process.terminate()
-        print("服务已停止")
+[VideoKit] Traceback (most recent call last):
+[错误检测] 可能是问题
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/queueing.py", line 667, in process_events
+[VideoKit] response = await route_utils.call_process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/route_utils.py", line 349, in call_process_api
+[VideoKit] output = await app.get_blocks().process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 2274, in process_api
+[VideoKit] result = await self.call_function(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 1781, in call_function
+[VideoKit] prediction = await anyio.to_thread.run_sync(  # type: ignore
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/to_thread.py", line 63, in run_sync
+[VideoKit] return await get_async_backend().run_sync_in_worker_thread(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 2518, in run_sync_in_worker_thread
+[VideoKit] return await future
+[VideoKit] ^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 1002, in run
+[VideoKit] result = context.run(func, *args)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/utils.py", line 915, in wrapper
+[VideoKit] response = f(*args, **kwargs)
+[VideoKit] ^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 205, in update_reference_position_gallery
+[VideoKit] gallery_vision_frames = extract_gallery_frames(target_vision_frame)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 216, in extract_gallery_frames
+[VideoKit] regions = get_many_regions([ target_vision_frame ])
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
+[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
+[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
+[错误检测] 可能是问题
+[VideoKit] Traceback (most recent call last):
+[错误检测] 可能是问题
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/queueing.py", line 667, in process_events
+[VideoKit] response = await route_utils.call_process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/route_utils.py", line 349, in call_process_api
+[VideoKit] output = await app.get_blocks().process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 2274, in process_api
+[VideoKit] result = await self.call_function(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 1781, in call_function
+[VideoKit] prediction = await anyio.to_thread.run_sync(  # type: ignore
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/to_thread.py", line 63, in run_sync
+[VideoKit] return await get_async_backend().run_sync_in_worker_thread(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 2518, in run_sync_in_worker_thread
+[VideoKit] return await future
+[VideoKit] ^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 1002, in run
+[VideoKit] result = context.run(func, *args)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/utils.py", line 915, in wrapper
+[VideoKit] response = f(*args, **kwargs)
+[VideoKit] ^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 205, in update_preview_image
+[VideoKit] preview_vision_frame = process_preview_frame(reference_vision_frame, source_vision_frames, source_audio_frame, source_voice_frame, target_vision_frame, preview_mode, preview_resolution)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 248, in process_preview_frame
+[VideoKit] temp_vision_frame, temp_vision_mask = processor_module.process_frame(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 739, in process_frame
+[VideoKit] source_region = extract_source_region(source_vision_frames)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 724, in extract_source_region
+[VideoKit] temp_regions = get_many_regions([source_vision_frame])
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
+[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
+[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
+[错误检测] 可能是问题
+[VideoKit] Traceback (most recent call last):
+[错误检测] 可能是问题
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/queueing.py", line 667, in process_events
+[VideoKit] response = await route_utils.call_process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/route_utils.py", line 349, in call_process_api
+[VideoKit] output = await app.get_blocks().process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 2274, in process_api
+[VideoKit] result = await self.call_function(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 1781, in call_function
+[VideoKit] prediction = await anyio.to_thread.run_sync(  # type: ignore
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/to_thread.py", line 63, in run_sync
+[VideoKit] return await get_async_backend().run_sync_in_worker_thread(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 2518, in run_sync_in_worker_thread
+[VideoKit] return await future
+[VideoKit] ^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 1002, in run
+[VideoKit] result = context.run(func, *args)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/utils.py", line 915, in wrapper
+[VideoKit] response = f(*args, **kwargs)
+[VideoKit] ^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 205, in update_reference_position_gallery
+[VideoKit] gallery_vision_frames = extract_gallery_frames(target_vision_frame)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/region_selector.py", line 216, in extract_gallery_frames
+[VideoKit] regions = get_many_regions([ target_vision_frame ])
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
+[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
+[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
+[错误检测] 可能是问题
+[VideoKit] Traceback (most recent call last):
+[错误检测] 可能是问题
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/queueing.py", line 667, in process_events
+[VideoKit] response = await route_utils.call_process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/route_utils.py", line 349, in call_process_api
+[VideoKit] output = await app.get_blocks().process_api(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 2274, in process_api
+[VideoKit] result = await self.call_function(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/blocks.py", line 1781, in call_function
+[VideoKit] prediction = await anyio.to_thread.run_sync(  # type: ignore
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/to_thread.py", line 63, in run_sync
+[VideoKit] return await get_async_backend().run_sync_in_worker_thread(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 2518, in run_sync_in_worker_thread
+[VideoKit] return await future
+[VideoKit] ^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/anyio/_backends/_asyncio.py", line 1002, in run
+[VideoKit] result = context.run(func, *args)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/usr/local/lib/python3.12/dist-packages/gradio/utils.py", line 915, in wrapper
+[VideoKit] response = f(*args, **kwargs)
+[VideoKit] ^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 205, in update_preview_image
+[VideoKit] preview_vision_frame = process_preview_frame(reference_vision_frame, source_vision_frames, source_audio_frame, source_voice_frame, target_vision_frame, preview_mode, preview_resolution)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 248, in process_preview_frame
+[VideoKit] temp_vision_frame, temp_vision_mask = processor_module.process_frame(
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 739, in process_frame
+[VideoKit] source_region = extract_source_region(source_vision_frames)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 724, in extract_source_region
+[VideoKit] temp_regions = get_many_regions([source_vision_frame])
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 119, in get_many_regions
+[VideoKit] regions = create_regions(vision_frame, all_bounding_boxes, all_region_scores, all_region_landmarks_5)
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/region_analyser.py", line 31, in create_regions
+[VideoKit] if state_manager.get_item('landmark_detector_score') > 0:
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] TypeError: '>' not supported between instances of 'NoneType' and 'int'
+[错误检测] 可能是问题
