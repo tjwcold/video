@@ -25,7 +25,7 @@ def render() -> gradio.Blocks:
 				with gradio.Blocks():
 					expression_restorer_options.render()
 				with gradio.Blocks():
-				region_debugger_options.render()
+					region_debugger_options.render()
 			with gradio.Blocks():
 				portrait_editor_options.render()
 			with gradio.Blocks():
