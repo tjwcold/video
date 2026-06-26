@@ -186,7 +186,7 @@ def create_output_creation_program() -> ArgumentParser:
 
 def create_processors_program() -> ArgumentParser:
 	program = ArgumentParser(add_help = False)
-	available_processors = [ get_file_name(file_path) for file_path in resolve_file_paths('VideoKit/processors/modules') ]
+	available_processors = [ get_file_name(file_path) for file_path in resolve_file_paths('videokit/processors/modules') ]
 	group_processors = program.add_argument_group('processors')
 	group_processors.add_argument('--processors', help = translator.get('help.processors').format(choices = ', '.join(available_processors)), default = config.get_str_list('processors', 'processors', 'style_transfer'), choices = available_processors, nargs = '+', metavar = 'PROCESSORS')
 	job_store.register_step_keys([ 'processors' ])
@@ -197,7 +197,7 @@ def create_processors_program() -> ArgumentParser:
 
 def create_uis_program() -> ArgumentParser:
 	program = ArgumentParser(add_help = False)
-	available_ui_layouts = [ get_file_name(file_path) for file_path in resolve_file_paths('VideoKit/uis/layouts') ]
+	available_ui_layouts = [ get_file_name(file_path) for file_path in resolve_file_paths('videokit/uis/layouts') ]
 	group_uis = program.add_argument_group('uis')
 	group_uis.add_argument('--open-browser', help = translator.get('help.open_browser'), action = 'store_true', default = config.get_bool_value('uis', 'open_browser'))
 	group_uis.add_argument('--ui-layouts', help = translator.get('help.ui_layouts').format(choices = ', '.join(available_ui_layouts)), default = config.get_str_list('uis', 'ui_layouts', 'default'), choices = available_ui_layouts, nargs = '+', metavar = 'UI_LAYOUTS')

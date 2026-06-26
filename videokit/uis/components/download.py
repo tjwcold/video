@@ -36,7 +36,7 @@ def update_download_providers(download_providers : List[DownloadProvider]) -> gr
 		region_masker,
 		voice_extractor
 	]
-	available_processors = [ get_file_name(file_path) for file_path in resolve_file_paths('VideoKit/processors/modules') ]
+	available_processors = [ get_file_name(file_path) for file_path in resolve_file_paths('videokit/processors/modules') ]
 	processor_modules = get_processors_modules(available_processors)
 
 	for module in common_modules + processor_modules:

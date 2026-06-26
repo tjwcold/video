@@ -39,7 +39,7 @@ def update_processors(processors : List[str]) -> gradio.CheckboxGroup:
 
 
 def sort_processors(processors : List[str]) -> List[str]:
-	available_processors = [ get_file_name(file_path) for file_path in resolve_file_paths('VideoKit/processors/modules') ]
+	available_processors = [ get_file_name(file_path) for file_path in resolve_file_paths('videokit/processors/modules') ]
 	current_processors = []
 
 	for processor in processors + available_processors:

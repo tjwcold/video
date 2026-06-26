@@ -37,8 +37,8 @@ def render() -> None:
 	global BACKGROUND_REMOVER_DESPILL_COLOR_ALPHA_NUMBER
 
 	has_background_remover = 'background_remover' in state_manager.get_item('processors')
-	background_remover_fill_color = state_manager.get_item('background_remover_fill_color')
-	background_remover_despill_color = state_manager.get_item('background_remover_despill_color')
+	background_remover_fill_color = state_manager.get_item('background_remover_fill_color') or (0, 0, 0, 255)
+	background_remover_despill_color = state_manager.get_item('background_remover_despill_color') or (0, 0, 0, 0)
 	BACKGROUND_REMOVER_MODEL_DROPDOWN = gradio.Dropdown(
 		label = translator.get('uis.model_dropdown', 'videokit.processors.modules.background_remover'),
 		choices = background_remover_choices.background_remover_models,
