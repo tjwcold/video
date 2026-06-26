@@ -19,9 +19,12 @@ def load(__locales__ : Locales, module_name : str) -> None:
 	LOCALE_POOL_SET[module_name] = __locales__
 
 
-def get(notation : str, module_name : str = 'VideoKit') -> Optional[str]:
+def get(notation : str, module_name : str = 'videokit') -> Optional[str]:
 	if module_name not in LOCALE_POOL_SET:
 		__autoload__(module_name)
+
+	if module_name not in LOCALE_POOL_SET:
+		return None
 
 	current = LOCALE_POOL_SET.get(module_name).get(CURRENT_LANGUAGE)
 
