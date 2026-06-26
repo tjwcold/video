@@ -101,17 +101,17 @@ def render() -> None:
 
 
 def listen() -> None:
-	region_selector_MODE_DROPDOWN.change(update_region_selector_mode, inputs = region_selector_MODE_DROPDOWN, outputs = [ REFERENCE_FACE_POSITION_GALLERY, REFERENCE_REGION_DISTANCE_SLIDER ])
-	region_selector_ORDER_DROPDOWN.change(update_region_selector_order, inputs = region_selector_ORDER_DROPDOWN, outputs = REFERENCE_FACE_POSITION_GALLERY)
-	region_selector_GENDER_DROPDOWN.change(update_region_selector_gender, inputs = region_selector_GENDER_DROPDOWN, outputs = REFERENCE_FACE_POSITION_GALLERY)
-	region_selector_RACE_DROPDOWN.change(update_region_selector_race, inputs = region_selector_RACE_DROPDOWN, outputs = REFERENCE_FACE_POSITION_GALLERY)
-	region_selector_AGE_RANGE_SLIDER.release(update_region_selector_age_range, inputs = region_selector_AGE_RANGE_SLIDER, outputs = REFERENCE_FACE_POSITION_GALLERY)
+	REGION_SELECTOR_MODE_DROPDOWN.change(update_region_selector_mode, inputs = REGION_SELECTOR_MODE_DROPDOWN, outputs = [ REFERENCE_REGION_POSITION_GALLERY, REFERENCE_REGION_DISTANCE_SLIDER ])
+	REGION_SELECTOR_ORDER_DROPDOWN.change(update_region_selector_order, inputs = REGION_SELECTOR_ORDER_DROPDOWN, outputs = REFERENCE_REGION_POSITION_GALLERY)
+	REGION_SELECTOR_GENDER_DROPDOWN.change(update_region_selector_gender, inputs = REGION_SELECTOR_GENDER_DROPDOWN, outputs = REFERENCE_REGION_POSITION_GALLERY)
+	REGION_SELECTOR_RACE_DROPDOWN.change(update_region_selector_race, inputs = REGION_SELECTOR_RACE_DROPDOWN, outputs = REFERENCE_REGION_POSITION_GALLERY)
+	REGION_SELECTOR_AGE_RANGE_SLIDER.release(update_region_selector_age_range, inputs = REGION_SELECTOR_AGE_RANGE_SLIDER, outputs = REFERENCE_REGION_POSITION_GALLERY)
 	REFERENCE_REGION_DISTANCE_SLIDER.release(update_reference_region_distance, inputs = REFERENCE_REGION_DISTANCE_SLIDER)
 
 	preview_frame_slider = get_ui_component('preview_frame_slider')
 	if preview_frame_slider:
-		REFERENCE_FACE_POSITION_GALLERY.select(update_reference_frame_number, inputs = preview_frame_slider)
-		REFERENCE_FACE_POSITION_GALLERY.select(update_reference_region_position)
+		REFERENCE_REGION_POSITION_GALLERY.select(update_reference_frame_number, inputs = preview_frame_slider)
+		REFERENCE_REGION_POSITION_GALLERY.select(update_reference_region_position)
 
 	for ui_component in get_ui_components(
 	[
@@ -121,7 +121,7 @@ def listen() -> None:
 		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(clear_reference_frame_number)
 			getattr(ui_component, method)(clear_reference_region_position)
-			getattr(ui_component, method)(update_reference_position_gallery, outputs = REFERENCE_FACE_POSITION_GALLERY)
+			getattr(ui_component, method)(update_reference_position_gallery, outputs = REFERENCE_REGION_POSITION_GALLERY)
 
 	for ui_component in get_ui_components(
 	[
