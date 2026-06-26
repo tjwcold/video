@@ -27,19 +27,13 @@
 [VideoKit] File "/content/video/videokit/uis/components/preview.py", line 205, in update_preview_image
 [VideoKit] preview_vision_frame = process_preview_frame(reference_vision_frame, source_vision_frames, source_audio_frame, source_voice_frame, target_vision_frame, preview_mode, preview_resolution)
 [VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 248, in process_preview_frame
-[VideoKit] temp_vision_frame, temp_vision_mask = processor_module.process_frame(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 745, in process_frame
-[VideoKit] temp_vision_frame = transfer_style(source_region, target_region, temp_vision_frame)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 574, in transfer_style
-[VideoKit] pixel_boost_vision_frame = forward_transfer_style(source_region, target_region, pixel_boost_vision_frame)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 601, in forward_transfer_style
-[VideoKit] for style_transfer_input in style_transfer.get_inputs():
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] AttributeError: 'NoneType' object has no attribute 'get_inputs'
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 246, in process_preview_frame
+[VideoKit] if processor_module.pre_process('preview'):
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 543, in pre_process
+[VideoKit] if not is_file(model_path):
+[VideoKit] ^^^^^^^
+[VideoKit] NameError: name 'is_file' is not defined. Did you mean: 'is_video'?
 [错误检测] 可能是问题
 [VideoKit] Traceback (most recent call last):
 [错误检测] 可能是问题
@@ -70,17 +64,11 @@
 [VideoKit] File "/content/video/videokit/uis/components/preview.py", line 205, in update_preview_image
 [VideoKit] preview_vision_frame = process_preview_frame(reference_vision_frame, source_vision_frames, source_audio_frame, source_voice_frame, target_vision_frame, preview_mode, preview_resolution)
 [VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 248, in process_preview_frame
-[VideoKit] temp_vision_frame, temp_vision_mask = processor_module.process_frame(
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 745, in process_frame
-[VideoKit] temp_vision_frame = transfer_style(source_region, target_region, temp_vision_frame)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 574, in transfer_style
-[VideoKit] pixel_boost_vision_frame = forward_transfer_style(source_region, target_region, pixel_boost_vision_frame)
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 601, in forward_transfer_style
-[VideoKit] for style_transfer_input in style_transfer.get_inputs():
-[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^
-[VideoKit] AttributeError: 'NoneType' object has no attribute 'get_inputs'
+[VideoKit] File "/content/video/videokit/uis/components/preview.py", line 246, in process_preview_frame
+[VideoKit] if processor_module.pre_process('preview'):
+[VideoKit] ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[VideoKit] File "/content/video/videokit/processors/modules/style_transfer/core.py", line 543, in pre_process
+[VideoKit] if not is_file(model_path):
+[VideoKit] ^^^^^^^
+[VideoKit] NameError: name 'is_file' is not defined. Did you mean: 'is_video'?
 [错误检测] 可能是问题

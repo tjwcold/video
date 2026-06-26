@@ -16,7 +16,7 @@ from videokit.region_analyser import get_average_region, get_many_regions, get_o
 from videokit.region_helper import paste_back, warp_region_by_region_landmark_5
 from videokit.region_masker import create_area_mask, create_box_mask, create_occlusion_mask, create_region_mask
 from videokit.region_selector import select_regions, sort_regions_by_order
-from videokit.filesystem import filter_image_paths, has_image, in_directory, is_image, is_video, resolve_relative_path, same_file_extension
+from videokit.filesystem import filter_image_paths, has_image, in_directory, is_file, is_image, is_video, resolve_relative_path, same_file_extension
 from videokit.model_helper import get_static_model_initializer
 from videokit.processors.modules.style_transfer import choices as style_transfer_choices
 from videokit.processors.modules.style_transfer.types import StyleTransferInputs
