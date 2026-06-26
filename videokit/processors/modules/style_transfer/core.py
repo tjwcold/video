@@ -528,37 +528,6 @@ def apply_args(args : Args, apply_state_item : ApplyStateItem) -> None:
 
 
 def pre_check() -> bool:
-	model_hash_set = get_model_options().get('hashes')
-	model_source_set = get_model_options().get('sources')
-
-	return conditional_download_hashes(model_hash_set) and conditional_download_sources(model_source_set)
-
-
-def pre_process(mode : ProcessMode) -> bool:
-	if not has_image(state_manager.get_item('source_paths')):
-		logger.error(translator.get('choose_image_source') + translator.get('exclamation_mark'), __name__)
-		return False
-
-	source_image_paths = filter_image_paths(state_manager.get_item('source_paths'))
-	source_vision_frames = read_static_images(source_image_paths)
-	source_regions = get_many_regions(source_vision_frames)
-
-	if not get_one_region(source_regions):
-		logger.error(translator.get('no_source_region_detected') + translator.get('exclamation_mark'), __name__)
-		return False
-
-	if mode in [ 'output', 'preview' ] and not is_image(state_manager.get_item('target_path')) and not is_video(state_manager.get_item('target_path')):
-		logger.error(translator.get('choose_image_or_video_target') + translator.get('exclamation_mark'), __name__)
-		return False
-
-	if mode == 'output' and not in_directory(state_manager.get_item('output_path')):
-		logger.error(translator.get('specify_image_or_video_output') + translator.get('exclamation_mark'), __name__)
-		return False
-
-	if mode == 'output' and not same_file_extension(state_manager.get_item('target_path'), state_manager.get_item('output_path')):
-		logger.error(translator.get('match_target_and_output_extension') + translator.get('exclamation_mark'), __name__)
-		return False
-
 	return True
 
 

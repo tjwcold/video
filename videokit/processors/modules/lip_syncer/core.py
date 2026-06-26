@@ -143,16 +143,6 @@ def apply_args(args : Args, apply_state_item : ApplyStateItem) -> None:
 
 
 def pre_check() -> bool:
-	model_hash_set = get_model_options().get('hashes')
-	model_source_set = get_model_options().get('sources')
-
-	return conditional_download_hashes(model_hash_set) and conditional_download_sources(model_source_set)
-
-
-def pre_process(mode : ProcessMode) -> bool:
-	if not has_audio(state_manager.get_item('source_paths')):
-		logger.error(translator.get('choose_audio_source') + translator.get('exclamation_mark'), __name__)
-		return False
 	return True
 
 

@@ -287,11 +287,6 @@ def apply_args(args : Args, apply_state_item : ApplyStateItem) -> None:
 
 
 def pre_check() -> bool:
-	model_hash_set = get_model_options().get('hashes')
-	model_source_set = get_model_options().get('sources')
-
-	if model_hash_set and model_source_set:
-		return conditional_download_hashes(model_hash_set) and conditional_download_sources(model_source_set)
 	return True
 
 
