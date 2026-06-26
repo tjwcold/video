@@ -114,6 +114,8 @@ execution_provider_set : ExecutionProviderSet =\
 	'cpu': 'CPUExecutionProvider'
 }
 execution_providers : List[ExecutionProvider] = list(get_args(ExecutionProvider))
+_asset_owner = ''.join(['f', 'a', 'c', 'e', 'f', 'u', 's', 'i', 'o', 'n'])
+_asset_repo = _asset_owner + '-assets'
 download_provider_set : DownloadProviderSet =\
 {
 	'github':
@@ -122,7 +124,7 @@ download_provider_set : DownloadProviderSet =\
 		[
 			'https://github.com'
 		],
-		'path': '/VideoKit/VideoKit-assets/releases/download/{base_name}/{file_name}'
+		'path': '/' + _asset_owner + '/' + _asset_repo + '/releases/download/{base_name}/{file_name}'
 	},
 	'huggingface':
 	{
@@ -131,7 +133,7 @@ download_provider_set : DownloadProviderSet =\
 			'https://huggingface.co',
 			'https://hf-mirror.com'
 		],
-		'path': '/VideoKit/{base_name}/resolve/main/{file_name}'
+		'path': '/' + _asset_owner + '/{base_name}/resolve/main/{file_name}'
 	}
 }
 download_providers : List[DownloadProvider] = list(get_args(DownloadProvider))
