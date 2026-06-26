@@ -1,7 +1,7 @@
 import gradio
 
 from videokit import state_manager
-from videokit.uis.components import about, age_modifier_options, background_remover_options, common_options, deep_swapper_options, download, execution, execution_thread_count, expression_restorer_options, face_debugger_options, region_detector, face_editor_options, face_enhancer_options, landmark_detector, region_masker, region_selector, face_swapper_options, frame_colorizer_options, frame_enhancer_options, instant_runner, job_manager, job_runner, lip_syncer_options, memory, output, output_options, preview, preview_options, processors, source, target, temp_frame, terminal, trim_frame, ui_workflow, voice_extractor
+from videokit.uis.components import about, age_modifier_options, background_remover_options, common_options, content_blend_options, download, execution, execution_thread_count, expression_restorer_options, region_debugger_options, region_detector, portrait_editor_options, quality_enhancer_options, landmark_detector, region_masker, region_selector, style_transfer_options, frame_colorizer_options, frame_enhancer_options, instant_runner, job_manager, job_runner, lip_syncer_options, memory, output, output_options, preview, preview_options, processors, source, target, temp_frame, terminal, trim_frame, ui_workflow, voice_extractor
 
 
 def pre_check() -> bool:
@@ -21,7 +21,7 @@ def render() -> gradio.Blocks:
 				with gradio.Blocks():
 					background_remover_options.render()
 				with gradio.Blocks():
-					deep_swapper_options.render()
+					content_blend_options.render()
 				with gradio.Blocks():
 					expression_restorer_options.render()
 				with gradio.Blocks():
@@ -88,7 +88,7 @@ def listen() -> None:
 	processors.listen()
 	age_modifier_options.listen()
 	background_remover_options.listen()
-	deep_swapper_options.listen()
+	content_blend_options.listen()
 	expression_restorer_options.listen()
 	region_debugger_options.listen()
 	portrait_editor_options.listen()

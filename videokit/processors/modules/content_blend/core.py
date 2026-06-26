@@ -16,8 +16,8 @@ from videokit.region_helper import paste_back, warp_region_by_region_landmark_5
 from videokit.region_masker import create_area_mask, create_box_mask, create_occlusion_mask, create_region_mask
 from videokit.region_selector import select_regions
 from videokit.filesystem import get_file_name, in_directory, is_image, is_video, resolve_file_paths, resolve_relative_path, same_file_extension
-from videokit.processors.modules.deep_swapper import choices as deep_swapper_choices
-from videokit.processors.modules.deep_swapper.types import ContentBlendInputs, ContentBlendMorph
+from videokit.processors.modules.content_blend import choices as content_blend_choices
+from videokit.processors.modules.content_blend.types import ContentBlendInputs, ContentBlendMorph
 from videokit.processors.types import ProcessorOutputs
 from videokit.program_helper import find_argument_group
 from videokit.thread_helper import thread_semaphore
@@ -247,28 +247,28 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 
 
 def get_inference_pool() -> InferencePool:
-	model_names = [ state_manager.get_item('deep_swapper_model') ]
+	model_names = [ state_manager.get_item('content_blend_model') ]
 	model_source_set = get_model_options().get('sources')
 
 	return inference_manager.get_inference_pool(__name__, model_names, model_source_set)
 
 
 def clear_inference_pool() -> None:
-	model_names = [ state_manager.get_item('deep_swapper_model') ]
+	model_names = [ state_manager.get_item('content_blend_model') ]
 	inference_manager.clear_inference_pool(__name__, model_names)
 
 
 def get_model_options() -> ModelOptions:
-	model_name = state_manager.get_item('deep_swapper_model')
+	model_name = state_manager.get_item('content_blend_model')
 	return create_static_model_set('full').get(model_name)
 
 
 def get_model_size() -> Size:
-	deep_swapper = get_inference_pool().get('content_blend')
+	content_blend = get_inference_pool().get('content_blend')
 
-	for deep_swapper_input in deep_swapper.get_inputs():
-		if deep_swapper_input.name == 'in_face:0':
-			return deep_swapper_input.shape[1:3]
+	for content_blend_input in content_blend.get_inputs():
+		if content_blend_input.name == 'in_face:0':
+			return content_blend_input.shape[1:3]
 
 	return 0, 0
 
@@ -276,14 +276,14 @@ def get_model_size() -> Size:
 def register_args(program : ArgumentParser) -> None:
 	group_processors = find_argument_group(program, 'processors')
 	if group_processors:
-		group_processors.add_argument('--deep-swapper-model', help = translator.get('help.model', __package__), default = config.get_str_value('processors', 'deep_swapper_model', 'iperov/elon_musk_224'), choices = deep_swapper_choices.deep_swapper_models)
-		group_processors.add_argument('--deep-swapper-morph', help = translator.get('help.morph', __package__), type = int, default = config.get_int_value('processors', 'deep_swapper_morph', '100'), choices = deep_swapper_choices.deep_swapper_morph_range, metavar = create_int_metavar(deep_swapper_choices.deep_swapper_morph_range))
-		videokit.jobs.job_store.register_step_keys([ 'deep_swapper_model', 'deep_swapper_morph' ])
+		group_processors.add_argument('--deep-swapper-model', help = translator.get('help.model', __package__), default = config.get_str_value('processors', 'content_blend_model', 'iperov/elon_musk_224'), choices = content_blend_choices.content_blend_models)
+		group_processors.add_argument('--deep-swapper-morph', help = translator.get('help.morph', __package__), type = int, default = config.get_int_value('processors', 'content_blend_morph', '100'), choices = content_blend_choices.content_blend_morph_range, metavar = create_int_metavar(content_blend_choices.content_blend_morph_range))
+		videokit.jobs.job_store.register_step_keys([ 'content_blend_model', 'content_blend_morph' ])
 
 
 def apply_args(args : Args, apply_state_item : ApplyStateItem) -> None:
-	apply_state_item('deep_swapper_model', args.get('deep_swapper_model'))
-	apply_state_item('deep_swapper_morph', args.get('deep_swapper_morph'))
+	apply_state_item('content_blend_model', args.get('content_blend_model'))
+	apply_state_item('content_blend_morph', args.get('content_blend_morph'))
 
 
 def pre_check() -> bool:
@@ -334,8 +334,8 @@ def swap_region(target_region : Region, temp_vision_frame : VisionFrame) -> Visi
 		crop_masks.append(occlusion_mask)
 
 	crop_vision_frame = prepare_crop_frame(crop_vision_frame)
-	deep_swapper_morph = numpy.array([ numpy.interp(state_manager.get_item('deep_swapper_morph'), [ 0, 100 ], [ 0, 1 ]) ]).astype(numpy.float32)
-	crop_vision_frame, crop_source_mask, crop_target_mask = forward(crop_vision_frame, deep_swapper_morph)
+	content_blend_morph = numpy.array([ numpy.interp(state_manager.get_item('content_blend_morph'), [ 0, 100 ], [ 0, 1 ]) ]).astype(numpy.float32)
+	crop_vision_frame, crop_source_mask, crop_target_mask = forward(crop_vision_frame, content_blend_morph)
 	crop_vision_frame = normalize_crop_frame(crop_vision_frame)
 	crop_vision_frame = conditional_match_frame_color(crop_vision_frame_raw, crop_vision_frame)
 	crop_masks.append(prepare_crop_mask(crop_source_mask, crop_target_mask))
@@ -354,27 +354,27 @@ def swap_region(target_region : Region, temp_vision_frame : VisionFrame) -> Visi
 	return paste_vision_frame
 
 
-def forward(crop_vision_frame : VisionFrame, deep_swapper_morph : ContentBlendMorph) -> Tuple[VisionFrame, Mask, Mask]:
-	deep_swapper = get_inference_pool().get('content_blend')
-	deep_swapper_inputs = {}
+def forward(crop_vision_frame : VisionFrame, content_blend_morph : ContentBlendMorph) -> Tuple[VisionFrame, Mask, Mask]:
+	content_blend = get_inference_pool().get('content_blend')
+	content_blend_inputs = {}
 
-	for deep_swapper_input in deep_swapper.get_inputs():
-		if deep_swapper_input.name == 'in_face:0':
-			deep_swapper_inputs[deep_swapper_input.name] = crop_vision_frame
-		if deep_swapper_input.name == 'morph_value:0':
-			deep_swapper_inputs[deep_swapper_input.name] = deep_swapper_morph
+	for content_blend_input in content_blend.get_inputs():
+		if content_blend_input.name == 'in_face:0':
+			content_blend_inputs[content_blend_input.name] = crop_vision_frame
+		if content_blend_input.name == 'morph_value:0':
+			content_blend_inputs[content_blend_input.name] = content_blend_morph
 
 	with thread_semaphore():
-		crop_target_mask, crop_vision_frame, crop_source_mask = deep_swapper.run(None, deep_swapper_inputs)
+		crop_target_mask, crop_vision_frame, crop_source_mask = content_blend.run(None, content_blend_inputs)
 
 	return crop_vision_frame[0], crop_source_mask[0], crop_target_mask[0]
 
 
 def has_morph_input() -> bool:
-	deep_swapper = get_inference_pool().get('content_blend')
+	content_blend = get_inference_pool().get('content_blend')
 
-	for deep_swapper_input in deep_swapper.get_inputs():
-		if deep_swapper_input.name == 'morph_value:0':
+	for content_blend_input in content_blend.get_inputs():
+		if content_blend_input.name == 'morph_value:0':
 			return True
 
 	return False

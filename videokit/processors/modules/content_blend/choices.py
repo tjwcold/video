@@ -2,9 +2,9 @@ from typing import List, Sequence
 
 from videokit.common_helper import create_int_range
 from videokit.filesystem import get_file_name, resolve_file_paths, resolve_relative_path
-from videokit.processors.modules.deep_swapper.types import ContentBlendModel
+from videokit.processors.modules.content_blend.types import ContentBlendModel
 
-deep_swapper_models : List[ContentBlendModel] =\
+content_blend_models : List[ContentBlendModel] =\
 [
 	'druuzil/adam_levine_320',
 	'druuzil/adrianne_palicki_384',
@@ -171,6 +171,6 @@ if custom_model_file_paths:
 
 	for model_file_path in custom_model_file_paths:
 		model_id = '/'.join([ 'custom', get_file_name(model_file_path) ])
-		deep_swapper_models.append(model_id)
+		content_blend_models.append(model_id)
 
-deep_swapper_morph_range : Sequence[int] = create_int_range(0, 100, 1)
+content_blend_morph_range : Sequence[int] = create_int_range(0, 100, 1)
