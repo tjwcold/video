@@ -115,6 +115,10 @@ def pre_check() -> bool:
 	return True
 
 
+def pre_process(mode : ProcessMode) -> bool:
+	return True
+
+
 def post_process() -> None:
 	read_static_image.cache_clear()
 	read_static_video_frame.cache_clear()
