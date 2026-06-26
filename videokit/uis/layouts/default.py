@@ -29,7 +29,7 @@ def render() -> gradio.Blocks:
 			with gradio.Blocks():
 				portrait_editor_options.render()
 			with gradio.Blocks():
-				region_enhancer_options.render()
+				quality_enhancer_options.render()
 			with gradio.Blocks():
 				style_transfer_options.render()
 				with gradio.Blocks():
