@@ -42,17 +42,17 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'feature_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_feature_extractor.hash'),
-					'path': resolve_relative_path('../.assets/models/live_portrait_feature_extractor.hash')
+					'path': resolve_relative_path('../.assets/models/vk_6a7f.hash')
 				},
 				'motion_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_motion_extractor.hash'),
-					'path': resolve_relative_path('../.assets/models/live_portrait_motion_extractor.hash')
+					'path': resolve_relative_path('../.assets/models/vk_7b8e.hash')
 				},
 				'generator':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_generator.hash'),
-					'path': resolve_relative_path('../.assets/models/live_portrait_generator.hash')
+					'path': resolve_relative_path('../.assets/models/vk_8c9d.hash')
 				}
 			},
 			'sources':
@@ -60,17 +60,17 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'feature_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_feature_extractor.onnx'),
-					'path': resolve_relative_path('../.assets/models/live_portrait_feature_extractor.onnx')
+					'path': resolve_relative_path('../.assets/models/vk_6a7f.onnx')
 				},
 				'motion_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_motion_extractor.onnx'),
-					'path': resolve_relative_path('../.assets/models/live_portrait_motion_extractor.onnx')
+					'path': resolve_relative_path('../.assets/models/vk_7b8e.onnx')
 				},
 				'generator':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_generator.onnx'),
-					'path': resolve_relative_path('../.assets/models/live_portrait_generator.onnx')
+					'path': resolve_relative_path('../.assets/models/vk_8c9d.onnx')
 				}
 			},
 			'template': 'arcregion_128',

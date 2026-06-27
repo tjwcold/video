@@ -30,7 +30,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'retinaface':
 				{
 					'url': resolve_download_url('models-3.0.0', 'retinaface_10g.hash'),
-					'path': resolve_relative_path('../.assets/models/retinaface_10g.hash')
+					'path': resolve_relative_path('../.assets/models/vk_1b2e.hash')
 				}
 			},
 			'sources':
@@ -38,7 +38,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'retinaface':
 				{
 					'url': resolve_download_url('models-3.0.0', 'retinaface_10g.onnx'),
-					'path': resolve_relative_path('../.assets/models/retinaface_10g.onnx')
+					'path': resolve_relative_path('../.assets/models/vk_1b2e.onnx')
 				}
 			}
 		},

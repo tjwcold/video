@@ -120,7 +120,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'quality_enhancer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'gfpgan_1.4.hash'),
-					'path': resolve_relative_path('../.assets/models/gfpgan_1.4.hash')
+					'path': resolve_relative_path('../.assets/models/vk_5f6a.hash')
 				}
 			},
 			'sources':
@@ -128,7 +128,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'quality_enhancer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'gfpgan_1.4.onnx'),
-					'path': resolve_relative_path('../.assets/models/gfpgan_1.4.onnx')
+					'path': resolve_relative_path('../.assets/models/vk_5f6a.onnx')
 				}
 			},
 			'template': 'ffhq_512',
