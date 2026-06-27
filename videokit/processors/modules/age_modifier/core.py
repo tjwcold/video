@@ -77,7 +77,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'age_modifier':
 				{
 					'url': resolve_download_url('models-3.1.0', 'styleganex_age.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_9dae.hash')
+					'path': resolve_relative_path('../.assets/models/styleganex_age.hash')
 				}
 			},
 			'sources':
@@ -85,7 +85,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'age_modifier':
 				{
 					'url': resolve_download_url('models-3.1.0', 'styleganex_age.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_9dae.onnx')
+					'path': resolve_relative_path('../.assets/models/styleganex_age.onnx')
 				}
 			},
 			'templates':

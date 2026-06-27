@@ -41,7 +41,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'lip_syncer':
 				{
 					'url': resolve_download_url('models-3.3.0', 'edtalk_256.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_0eaf.hash')
+					'path': resolve_relative_path('../.assets/models/edtalk_256.hash')
 				}
 			},
 			'sources':
@@ -49,7 +49,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'lip_syncer':
 				{
 					'url': resolve_download_url('models-3.3.0', 'edtalk_256.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_0eaf.onnx')
+					'path': resolve_relative_path('../.assets/models/edtalk_256.onnx')
 				}
 			},
 			'type': 'edtalk',
@@ -68,7 +68,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'lip_syncer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'wav2lip_96.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_ecfd.hash')
+					'path': resolve_relative_path('../.assets/models/wav2lip_96.hash')
 				}
 			},
 			'sources':
@@ -76,7 +76,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'lip_syncer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'wav2lip_96.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_ecfd.onnx')
+					'path': resolve_relative_path('../.assets/models/wav2lip_96.onnx')
 				}
 			},
 			'type': 'wav2lip',
@@ -95,7 +95,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'lip_syncer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'wav2lip_gan_96.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_fdae.hash')
+					'path': resolve_relative_path('../.assets/models/wav2lip_gan_96.hash')
 				}
 			},
 			'sources':
@@ -103,7 +103,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'lip_syncer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'wav2lip_gan_96.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_fdae.onnx')
+					'path': resolve_relative_path('../.assets/models/wav2lip_gan_96.onnx')
 				}
 			},
 			'type': 'wav2lip',

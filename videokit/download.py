@@ -22,29 +22,24 @@ def conditional_download(download_directory_path : str, urls : List[str]) -> Non
 	for url in urls:
 		download_file_name = os.path.basename(urlparse(url).path)
 		download_file_path = os.path.join(download_directory_path, download_file_name)
-		conditional_download_file(download_file_path, url)
+		initial_size = get_file_size(download_file_path)
+		download_size = get_static_download_size(url)
 
+		if initial_size < download_size:
+			with tqdm(total = download_size, initial = initial_size, desc = translator.get('downloading'), unit = 'B', unit_scale = True, unit_divisor = 1024, ascii = ' =', disable = state_manager.get_item('log_level') in [ 'warn', 'error' ]) as progress:
+				commands = curl_builder.chain(
+					curl_builder.download(url, download_file_path),
+					curl_builder.set_timeout(5),
+					curl_builder.set_retry(5)
+				)
+				open_curl(commands)
+				current_size = initial_size
+				progress.set_postfix(download_providers = state_manager.get_item('download_providers'), file_name = download_file_name)
 
-def conditional_download_file(download_file_path : str, url : str) -> None:
-	download_file_name = os.path.basename(download_file_path)
-	initial_size = get_file_size(download_file_path)
-	download_size = get_static_download_size(url)
-
-	if initial_size < download_size:
-		with tqdm(total = download_size, initial = initial_size, desc = translator.get('downloading'), unit = 'B', unit_scale = True, unit_divisor = 1024, ascii = ' =', disable = state_manager.get_item('log_level') in [ 'warn', 'error' ]) as progress:
-			commands = curl_builder.chain(
-				curl_builder.download(url, download_file_path),
-				curl_builder.set_timeout(5),
-				curl_builder.set_retry(5)
-			)
-			open_curl(commands)
-			current_size = initial_size
-			progress.set_postfix(download_providers = state_manager.get_item('download_providers'), file_name = download_file_name)
-
-			while current_size < download_size:
-				if is_file(download_file_path):
-					current_size = get_file_size(download_file_path)
-					progress.update(current_size - progress.n)
+				while current_size < download_size:
+					if is_file(download_file_path):
+						current_size = get_file_size(download_file_path)
+						progress.update(current_size - progress.n)
 
 
 @lru_cache(maxsize = 64)
@@ -85,9 +80,9 @@ def conditional_download_hashes(hash_set : DownloadSet) -> bool:
 		for index in hash_set:
 			if hash_set.get(index).get('path') in invalid_hash_paths:
 				invalid_hash_url = hash_set.get(index).get('url')
-				invalid_hash_path = hash_set.get(index).get('path')
 				if invalid_hash_url:
-					conditional_download_file(invalid_hash_path, invalid_hash_url)
+					download_directory_path = os.path.dirname(hash_set.get(index).get('path'))
+					conditional_download(download_directory_path, [ invalid_hash_url ])
 
 	valid_hash_paths, invalid_hash_paths = validate_hash_paths(hash_paths)
 
@@ -112,9 +107,9 @@ def conditional_download_sources(source_set : DownloadSet) -> bool:
 		for index in source_set:
 			if source_set.get(index).get('path') in invalid_source_paths:
 				invalid_source_url = source_set.get(index).get('url')
-				invalid_source_path = source_set.get(index).get('path')
 				if invalid_source_url:
-					conditional_download_file(invalid_source_path, invalid_source_url)
+					download_directory_path = os.path.dirname(source_set.get(index).get('path'))
+					conditional_download(download_directory_path, [ invalid_source_url ])
 
 	valid_source_paths, invalid_source_paths = validate_source_paths(source_paths)
 

@@ -42,32 +42,32 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'feature_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_feature_extractor.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_6a7f.hash')
+					'path': resolve_relative_path('../.assets/models/live_portrait_feature_extractor.hash')
 				},
 				'motion_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_motion_extractor.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_7b8e.hash')
+					'path': resolve_relative_path('../.assets/models/live_portrait_motion_extractor.hash')
 				},
 				'eye_retargeter':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_eye_retargeter.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_bfca.hash')
+					'path': resolve_relative_path('../.assets/models/live_portrait_eye_retargeter.hash')
 				},
 				'lip_retargeter':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_lip_retargeter.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_cadb.hash')
+					'path': resolve_relative_path('../.assets/models/live_portrait_lip_retargeter.hash')
 				},
 				'stitcher':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_stitcher.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_dbec.hash')
+					'path': resolve_relative_path('../.assets/models/live_portrait_stitcher.hash')
 				},
 				'generator':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_generator.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_8c9d.hash')
+					'path': resolve_relative_path('../.assets/models/live_portrait_generator.hash')
 				}
 			},
 			'sources':
@@ -75,32 +75,32 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'feature_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_feature_extractor.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_6a7f.onnx')
+					'path': resolve_relative_path('../.assets/models/live_portrait_feature_extractor.onnx')
 				},
 				'motion_extractor':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_motion_extractor.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_7b8e.onnx')
+					'path': resolve_relative_path('../.assets/models/live_portrait_motion_extractor.onnx')
 				},
 				'eye_retargeter':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_eye_retargeter.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_bfca.onnx')
+					'path': resolve_relative_path('../.assets/models/live_portrait_eye_retargeter.onnx')
 				},
 				'lip_retargeter':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_lip_retargeter.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_cadb.onnx')
+					'path': resolve_relative_path('../.assets/models/live_portrait_lip_retargeter.onnx')
 				},
 				'stitcher':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_stitcher.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_dbec.onnx')
+					'path': resolve_relative_path('../.assets/models/live_portrait_stitcher.onnx')
 				},
 				'generator':
 				{
 					'url': resolve_download_url('models-3.0.0', 'live_portrait_generator.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_8c9d.onnx')
+					'path': resolve_relative_path('../.assets/models/live_portrait_generator.onnx')
 				}
 			},
 			'template': 'ffhq_512',

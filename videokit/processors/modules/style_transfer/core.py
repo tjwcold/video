@@ -235,7 +235,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'style_transfer':
 				{
 					'url': resolve_download_url('models-3.3.0', 'hyperswap_1a_256.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_3d4c.hash')
+					'path': resolve_relative_path('../.assets/models/hyperswap_1a_256.hash')
 				}
 			},
 			'sources':
@@ -243,7 +243,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'style_transfer':
 				{
 					'url': resolve_download_url('models-3.3.0', 'hyperswap_1a_256.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_3d4c.onnx')
+					'path': resolve_relative_path('../.assets/models/hyperswap_1a_256.onnx')
 				}
 			},
 			'type': 'hyperswap',

@@ -38,7 +38,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'frame_colorizer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'ddcolor.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_4e5b.hash')
+					'path': resolve_relative_path('../.assets/models/ddcolor.hash')
 				}
 			},
 			'sources':
@@ -46,7 +46,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'frame_colorizer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'ddcolor.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_4e5b.onnx')
+					'path': resolve_relative_path('../.assets/models/ddcolor.onnx')
 				}
 			},
 			'type': 'ddcolor'

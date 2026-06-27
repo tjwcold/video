@@ -28,7 +28,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'region_recognizer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'arcface_w600k_r50.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_2c3d.hash')
+					'path': resolve_relative_path('../.assets/models/arcface_w600k_r50.hash')
 				}
 			},
 			'sources':
@@ -36,7 +36,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'region_recognizer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'arcface_w600k_r50.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_2c3d.onnx')
+					'path': resolve_relative_path('../.assets/models/arcface_w600k_r50.onnx')
 				}
 			},
 			'template': 'arcface_112_v2',

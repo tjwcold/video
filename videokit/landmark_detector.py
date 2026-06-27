@@ -81,7 +81,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'fan_68_5':
 				{
 					'url': resolve_download_url('models-3.0.0', 'fan_68_5.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_0a1f.hash')
+					'path': resolve_relative_path('../.assets/models/fan_68_5.hash')
 				}
 			},
 			'sources':
@@ -89,7 +89,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'fan_68_5':
 				{
 					'url': resolve_download_url('models-3.0.0', 'fan_68_5.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_0a1f.onnx')
+					'path': resolve_relative_path('../.assets/models/fan_68_5.onnx')
 				}
 			}
 		}

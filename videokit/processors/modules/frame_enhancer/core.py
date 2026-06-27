@@ -172,7 +172,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'frame_enhancer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'real_esrgan_x4.hash'),
-					'path': resolve_relative_path('../.assets/models/vk_aebf.hash')
+					'path': resolve_relative_path('../.assets/models/real_esrgan_x4.hash')
 				}
 			},
 			'sources':
@@ -180,7 +180,7 @@ def create_static_model_set(download_scope : DownloadScope) -> ModelSet:
 				'frame_enhancer':
 				{
 					'url': resolve_download_url('models-3.0.0', 'real_esrgan_x4.onnx'),
-					'path': resolve_relative_path('../.assets/models/vk_aebf.onnx')
+					'path': resolve_relative_path('../.assets/models/real_esrgan_x4.onnx')
 				}
 			},
 			'size': (256, 16, 8),
